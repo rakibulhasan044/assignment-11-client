@@ -4,9 +4,11 @@ import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa";
 import register from '../../assets/animation/register.json'
 import Lottie from "lottie-react";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
   const [show, setShow] = useState(false);
+  const { user, createUser, profileUpdate, setUser } = useAuth()
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -15,6 +17,18 @@ const Register = () => {
     const photourl = form.photourl.value;
     const password = form.password.value;
     console.log(name, email, photourl, password);
+
+    createUser(email, password)
+    .then(res => {
+        console.log(res.user);
+        profileUpdate(name, photourl)
+      .then(() => {
+        setUser({...user, displplayName: name, photoURL: photourl})
+      })
+    })
+    .catch(error => {
+        console.log(error.message);
+    })
 
   };
   return (

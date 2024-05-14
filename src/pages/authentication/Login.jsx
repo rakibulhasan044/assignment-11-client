@@ -5,9 +5,11 @@ import { FaGoogle } from "react-icons/fa6";
 import { useState } from "react";
 import Lottie from "lottie-react";
 import login from "../../assets/animation/login.json";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  const { googleLogin } = useAuth()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,15 +19,21 @@ const Login = () => {
     console.log(email, password);
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     console.log('ttt');
+    try {
+        const result = await googleLogin()
+        console.log(result.user);
+    }
+    catch(err) {
+        console.log(err.message);
+    }
   };
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
         <Lottie
           animationData={login}
-          loop={true}
           className="w-full h-full md:h-auto"
           style={{ zIndex: -1 }}
         />

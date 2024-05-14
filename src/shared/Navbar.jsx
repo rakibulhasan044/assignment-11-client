@@ -3,7 +3,12 @@ import logo from "../assets/logo.png";
 import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-  //const { user } = useAuth();
+  const { user, logOut } = useAuth();
+
+  const handleLogOut = () => {
+    logOut();
+  };
+
   const listItems = (
     <>
       <li>
@@ -15,10 +20,15 @@ const Navbar = () => {
       <li>
         <NavLink to="my-bookings">My Booking</NavLink>
       </li>
-      <li>
-        <NavLink to="register">Register</NavLink>
-      </li>
-      
+      {user ? (
+        <></>
+      ) : (
+        <>
+          <li>
+            <NavLink to="register">Register</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -55,16 +65,35 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <div className="flex items-center justify-center gap-3 md:gap-5">
-        <Link to='/login' className="btn btn-outline btn-success btn-sm">Login</Link>
-        <div className="avatar">
-          <div className="w-12 md:w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
+          {user ? (
+            <>
+              <div className="flex items-center justify-center gap-3 md:gap-5">
+                <Link
+                  onClick={handleLogOut}
+                  className="btn btn-outline btn-error btn-sm"
+                >
+                  Log Out
+                </Link>
+                <div className="avatar">
+                  <div
+                    className="w-12 md:w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 tooltip tooltip-bottom"
+                    data-tip={user?.displayName || ""}
+                  >
+                    <img src={user?.photoURL} />
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <Link to="/login" className="btn btn-outline btn-success btn-sm">
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
 
 export default Navbar;
