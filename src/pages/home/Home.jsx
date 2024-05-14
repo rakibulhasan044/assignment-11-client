@@ -1,9 +1,12 @@
+import Banner from "../../components/Banner";
+import Features from "./Features";
 
 const Home = () => {
     return (
-        <p>
-            this is home.
-        </p>
+        <div>
+            <Banner/>
+            <Features/>
+        </div>
     );
 };
 
