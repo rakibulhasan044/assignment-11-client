@@ -11,9 +11,15 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
   };
 
-  const handleGoogleLogin = () => {};
+  const handleGoogleLogin = () => {
+    console.log('ttt');
+  };
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
