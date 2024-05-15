@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layouts/Main";
 import Home from "../pages/home/Home";
-import Rooms from "../pages/Rooms";
 import MyBookings from "../pages/MyBookings";
 import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
+import Room from "../pages/Room";
+
 
 
 const router = createBrowserRouter([
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/rooms',
-                element: <Rooms/>
+                element: <Room/>,
+                loader: () => fetch(`${import.meta.env.VITE_API_URL}/rooms`)
             },
             {
                 path: '/my-bookings',

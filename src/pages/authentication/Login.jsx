@@ -6,10 +6,11 @@ import { useState } from "react";
 import Lottie from "lottie-react";
 import login from "../../assets/animation/login.json";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [show, setShow] = useState(false);
-  const { googleLogin } = useAuth()
+  const { googleLogin, signIn } = useAuth()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -17,6 +18,18 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password);
+    signIn(email, password)
+    .then(res => {
+        console.log(res.user);
+    })
+
+    .catch(error =>{
+        Swal.fire({
+            title: "Something wrong!",
+            text: `${error.message}`,
+            icon: "error"
+          });
+    })
   };
 
   const handleGoogleLogin = async () => {
@@ -24,6 +37,11 @@ const Login = () => {
     try {
         const result = await googleLogin()
         console.log(result.user);
+        Swal.fire({
+            title: "Successfully Login!",
+            text: "Welcome!",
+            icon: "success"
+          });
     }
     catch(err) {
         console.log(err.message);

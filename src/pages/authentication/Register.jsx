@@ -5,6 +5,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import register from '../../assets/animation/register.json'
 import Lottie from "lottie-react";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [show, setShow] = useState(false);
@@ -25,9 +26,18 @@ const Register = () => {
       .then(() => {
         setUser({...user, displplayName: name, photoURL: photourl})
       })
+      Swal.fire({
+        title: "Successfully Register!",
+        text: "Welcome!",
+        icon: "success"
+      });
     })
     .catch(error => {
-        console.log(error.message);
+        Swal.fire({
+            title: "Please Try Again!",
+            text: `${error.message}`,
+            icon: "error"
+          });
     })
 
   };
@@ -99,11 +109,6 @@ const Register = () => {
             >
               {show ? <FaEye /> : <FaEyeSlash />}
             </span>
-            <label className="label">
-              <a href="#" className="label-text-alt link link-hover">
-                Forgot password?
-              </a>
-            </label>
           </div>
           <div className="form-control mt-6">
             <button className="btn btn-primary">Login</button>
