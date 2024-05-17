@@ -2,7 +2,7 @@
 
 const RoomCard = ({room}) => {
     const {category, price, size, images, occupancy} = room;
-    console.log(images);
+    
     return (
         <div>
             <div>
@@ -16,8 +16,6 @@ const RoomCard = ({room}) => {
                 </div>
                 <p>{size}</p>
                 <p>{occupancy}</p>
-
-
             </div>
         </div>
     );
