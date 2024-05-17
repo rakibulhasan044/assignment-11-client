@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import RoomCard from "../components/RoomCard";
 import { useEffect, useState } from "react";
+import axios from 'axios'
 
 const Room = () => {
   const allCount = useLoaderData();
@@ -9,6 +10,7 @@ const Room = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('');
+  const [priceRange, setPriceRange] = useState('');
 
   const numberofPages = Math.ceil(count / itemsPerPage);
   const pages = [...Array(numberofPages).keys()].map(i => i + 1);
@@ -32,30 +34,49 @@ const Room = () => {
   };
 
   useEffect(() => {
-    // Fetch the rooms with pagination and filter
-    fetch(`${import.meta.env.VITE_API_URL}/rooms?page=${currentPage}&size=${itemsPerPage}&filter=${filter}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setRooms(data);
-      });
+    axios.get(`${import.meta.env.VITE_API_URL}/rooms`, {
+      params: {
+        page: currentPage,
+        size: itemsPerPage,
+        filter: filter,
+        priceRange: priceRange
 
-    // Fetch the total count of rooms
-    fetch(`${import.meta.env.VITE_API_URL}/roomsCount?filter=${filter}`)
-    .then(res => res.json())
-    .then(data => {
-      setCount(data.count)
+      }
     })
-  }, [currentPage, itemsPerPage, filter]);
+    .then((response) => {
+      setRooms(response.data);
+    })
+    axios.get(`${import.meta.env.VITE_API_URL}/roomsCount`, {
+      params: {
+        filter: filter,
+        priceRange: priceRange
+      }
+    })
+    .then(response => {
+      setCount(response.data.count)
+    })
+  }, [currentPage, itemsPerPage, filter, priceRange]);
 
   return (
     <div>
-      <div>
-        <select onChange={e => setFilter(e.target.value)} value={filter} name="category">
-          <option value="">Filter by category</option>
+      <div className="flex gap-14">
+      <div className="my-5">
+        <select onChange={e => setFilter(e.target.value)} value={filter} name="category" className="p-2">
+          <option value="" className="">Filter by category</option>
           <option value="GUEST ROOM">GUEST ROOM</option>
           <option value="LUXURY RESIDENCES">LUXURY RESIDENCES</option>
           <option value="SUITE">SUITE</option>
         </select>
+      </div>
+      <div className="my-5">
+        <select onChange={e => setPriceRange(e.target.value)} value={priceRange} name="priceRange"
+        className="p-2">
+          <option value="">Filter by price</option>
+          <option value="0-400">0-400</option>
+          <option value="400-600">400-600</option>
+          <option value="600-2000">600-2000</option>
+        </select>
+      </div>
       </div>
       <div className="grid grid-cols-2 gap-5">
         {rooms.map((room) => (
