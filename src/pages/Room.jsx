@@ -59,7 +59,7 @@ const Room = () => {
 
   return (
     <div>
-      <div className="flex gap-14">
+      <div className="flex gap-5 md:gap-14">
       <div className="my-5">
         <select onChange={e => setFilter(e.target.value)} value={filter} name="category" className="p-2">
           <option value="" className="">Filter by category</option>
@@ -72,18 +72,17 @@ const Room = () => {
         <select onChange={e => setPriceRange(e.target.value)} value={priceRange} name="priceRange"
         className="p-2">
           <option value="">Filter by price</option>
-          <option value="0-400">0-400</option>
-          <option value="400-600">400-600</option>
-          <option value="600-2000">600-2000</option>
+          <option value="0-1000">0-1000</option>
+          <option value="1000-2000">1000-2000</option>
+          <option value="2000-3000">2000-3000</option>
         </select>
       </div>
       </div>
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-10">
         {rooms.map((room) => (
           <RoomCard key={room._id} room={room}></RoomCard>
         ))}
       </div>
-      <p className="text-center">currentPage: {currentPage}</p>
       <div className="flex gap-5 justify-center mb-5">
         <button onClick={handlePrevPage} className="btn btn-sm">Prev</button>
         {pages.map((page) => (

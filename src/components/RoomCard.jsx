@@ -1,21 +1,25 @@
+import { Link } from "react-router-dom";
 
 
 const RoomCard = ({room}) => {
-    const {category, price, size, images, occupancy} = room;
+    const {_id, title, price, size, images, occupancy} = room;
     
     return (
         <div>
-            <div>
+            <Link to={`/room-details/${_id}`}>
                 <img src={images[0]} alt="" />
-            </div>
+            </Link>
             <div className="mt-5 space-y-2">
-                <p className="text-xl font-bold">{category}</p>
-                <div className="flex gap-10">
-                <p className="font-semibold">${price} per night</p>
-                <p className="text-red-500 font-medium">{room?.offers}</p>
+                <p className="text-xl font-bold">{title}</p>
+                <div className="flex gap-2">
+                <p className="font-semibold">${price} per night,</p>
+                {
+                    room.offer ? `$${price - ((room.offer /100) * price)} per night after ${room.offer} discount` : ''
+                }
                 </div>
                 <p>{size}</p>
                 <p>{occupancy}</p>
+                <Link to={`/room-details/${_id}`} className="btn btn-outline btn-accent w-full">Details</Link>
             </div>
         </div>
     );

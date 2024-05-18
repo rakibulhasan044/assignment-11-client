@@ -1,11 +1,10 @@
 
 import { Map, Marker, Overlay } from 'pigeon-maps';
-import logo from '../assets/logo.png'
 
 const MyMap = () => {
     return (
-        <div className='flex flex-col md:flex-row gap-5 md:gap-10 mt-10 md:mt-16'>
-            <div className='w-2/5 flex flex-col justify-center space-y-3'>
+        <div className='flex flex-col md:flex-row gap-5 lg:gap-10 mt-10 md:mt-16'>
+            <div className='md:w-2/5 flex flex-col justify-center space-y-3'>
                 <p className='text-2xl font-bold text-center'>You can find us here</p>
                 <p className='text-lg font-medium'>
                     We are located in the heart of California. Use the interactive map below to find the exact location of <span className='text-red-500 font-semibold'>SplenDico</span>.
