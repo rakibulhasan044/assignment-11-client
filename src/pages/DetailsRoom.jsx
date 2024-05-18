@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
+import axios from 'axios'
 
 import "react-datepicker/dist/react-datepicker.css";
 import "swiper/css";
@@ -38,14 +39,44 @@ const DetailsRoom = () => {
     category
   } = room;
 
-  const handleBooking = (e) => {
+  const handleForm = (e) => {
     e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    console.log(name, email);
     setModalOpen(true);
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
   };
+
+  const handleBooking = async(e) => {
+    // const name = user?.displayName;
+    // const email = user?.email;
+    // const date = startDate;
+    // const totalPrice = price - ((room?.offer /100) * price) || price;
+    // console.log(name, email, date, totalPrice);
+    const bookingData = {
+      name: user?.displayName,
+      email: user?.email,
+      date: startDate,
+      totalPrice: price - ((room?.offer /100) * price) || price,
+      category: category,
+      roomName: title
+    }
+
+    try {
+      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/booking`, bookingData)
+      console.log(data);
+    }
+    catch (error) {
+      console.log(error.message);
+    }
+
+    setModalOpen(false);
+  }
 
   return (
     <div className="space-y-4">
@@ -90,7 +121,7 @@ const DetailsRoom = () => {
         <h2 className="text-lg font-semibold text-gray-700 capitalize dark:text-white">
           Booking confirmation
         </h2>
-        <form onSubmit={handleBooking}>
+        <form onSubmit={handleForm}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
               <label className="text-gray-700 dark:text-gray-200" htmlFor="username">
@@ -101,6 +132,7 @@ const DetailsRoom = () => {
                 type="text"
                 name="name"
                 defaultValue={user?.displayName}
+                readOnly
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
               />
             </div>
@@ -114,6 +146,7 @@ const DetailsRoom = () => {
                 type="email"
                 name="email"
                 defaultValue={user?.email}
+                readOnly
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
               />
             </div>
@@ -137,6 +170,7 @@ const DetailsRoom = () => {
                 type="text"
                 name="price"
                 defaultValue={price - ((room?.offer /100) * price) || price}
+                readOnly
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
               />
             </div>
@@ -166,7 +200,7 @@ const DetailsRoom = () => {
             </p>
             <div className="modal-action">
               <button className="btn btn-error" onClick={handleModalClose}>Cancel</button>
-              <button className="btn btn-success" onClick={handleModalClose}>Confirm</button>
+              <button className="btn btn-success" onClick={handleBooking}>Confirm</button>
             </div>
           </div>
         </dialog>
