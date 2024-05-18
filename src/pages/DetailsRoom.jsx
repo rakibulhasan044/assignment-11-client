@@ -2,7 +2,8 @@ import { useLoaderData } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
-import axios from 'axios'
+import axios from 'axios';
+import Swal from "sweetalert2";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "swiper/css";
@@ -24,8 +25,10 @@ const DetailsRoom = () => {
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
+  const [availableRoom, setRoomAvailable] = useState(room.available); // Track the availability status
 
   const {
+    _id,
     images,
     title,
     price,
@@ -41,10 +44,6 @@ const DetailsRoom = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    console.log(name, email);
     setModalOpen(true);
   };
 
@@ -52,29 +51,43 @@ const DetailsRoom = () => {
     setModalOpen(false);
   };
 
-  const handleBooking = async(e) => {
-    // const name = user?.displayName;
-    // const email = user?.email;
-    // const date = startDate;
-    // const totalPrice = price - ((room?.offer /100) * price) || price;
-    // console.log(name, email, date, totalPrice);
-    const bookingData = {
-      name: user?.displayName,
-      email: user?.email,
-      date: startDate,
-      totalPrice: price - ((room?.offer /100) * price) || price,
-      category: category,
-      roomName: title
-    }
+  const handleBooking = async (id, prevStatus, newStatus) => {
+    if (prevStatus === 'Available') {
+      const bookingData = {
+        name: user?.displayName,
+        email: user?.email,
+        date: startDate,
+        totalPrice: price - ((room?.offer / 100) * price) || price,
+        category: category,
+        roomName: title
+      }
 
-    try {
-      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/booking`, bookingData)
-      console.log(data);
-    }
-    catch (error) {
-      console.log(error.message);
-    }
+      try {
+        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/booking`, bookingData);
+        console.log(data);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Room successfully booked",
+          showConfirmButton: false,
+          timer: 1500
+        });
 
+        const state = await axios.patch(`${import.meta.env.VITE_API_URL}/room/${id}`, { available: newStatus });
+        console.log(state.data);
+        setRoomAvailable(state.data.available);
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "Room already booked",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
     setModalOpen(false);
   }
 
@@ -108,13 +121,12 @@ const DetailsRoom = () => {
       <p className="max-w-4xl mx-auto">{description}</p>
       <h2 className="text-3xl font-bold text-center">Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* Add other room details here */}
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">CATEGORY</span>: {category}</div>
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">BEDS</span>: {bed}</div>
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">OCCUPANCY</span>: {occumpany}</div>
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">SIZE</span>: {size}</div>
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">BATHROOM</span>: {bathroom}</div>
-        <div> <hr className="pb-5" /><span className="text-lg font-semibold">VIEWS</span>: {view}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">CATEGORY</span>: {category}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">BEDS</span>: {bed}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">OCCUPANCY</span>: {occumpany}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">SIZE</span>: {size}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">BATHROOM</span>: {bathroom}</div>
+        <div><hr className="pb-5" /><span className="text-lg font-semibold">VIEWS</span>: {view}</div>
       </div>
       <hr className=" border-dotted" />
       <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
@@ -169,18 +181,17 @@ const DetailsRoom = () => {
                 
                 type="text"
                 name="price"
-                defaultValue={price - ((room?.offer /100) * price) || price}
+                defaultValue={price - ((room?.offer / 100) * price) || price}
                 readOnly
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring"
               />
             </div>
-
-            
           </div>
           <div className="flex justify-end mt-6">
             <button
               type="submit"
               className="btn btn-outline btn-warning px-10"
+              //disabled={availableRoom === 'Booked'} // Conditionally disable the button
             >
               BOOK Now
             </button>
@@ -200,7 +211,7 @@ const DetailsRoom = () => {
             </p>
             <div className="modal-action">
               <button className="btn btn-error" onClick={handleModalClose}>Cancel</button>
-              <button className="btn btn-success" onClick={handleBooking}>Confirm</button>
+              <button className="btn btn-success" onClick={() => handleBooking(_id, availableRoom, "Booked")}>Confirm</button> {/* Pass the current and new status */}
             </div>
           </div>
         </dialog>
