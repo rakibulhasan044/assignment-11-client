@@ -10,6 +10,7 @@ const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [star, setStar] = useState(0);
   const [hoverStar, setHoverStar] = useState(0);
+  const [reviewRoom, setReviewRoom] = useState(null)
 
   useEffect(() => {
     getData();
@@ -22,7 +23,7 @@ const MyBookings = () => {
     setBookings(data);
   };
 
-  const handleReview = async e => {
+  const handleReview = async (e) => {
     //e.preventDefault();
     const name = user?.displayName;
     const photo = user?.photoURL;
@@ -30,8 +31,9 @@ const MyBookings = () => {
     const text = form.text.value;
     const date = moment();
     const reviewData = {
-      name, photo, text, date
+      name, photo, text, date, roomId : reviewRoom
     }
+    // console.log(roomId);
     if (star > 1 && text.length > 1) {
       const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData)
       console.log(data);
@@ -133,7 +135,8 @@ const MyBookings = () => {
                 <dialog id="my_modal_1" className="modal">
                   <div className="modal-box">
                     <div>
-                      <form method="dialog" onSubmit={handleReview}>
+                      <form method="dialog" onSubmit={handleReview}
+                      onChange={() => setReviewRoom(booking.roomId)}>
                         <div className="text-center space-y-2">
                           <h3 className="font-bold text-lg">Rate us</h3>
                           <div className="cursor-pointer">
