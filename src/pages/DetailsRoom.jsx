@@ -37,7 +37,6 @@ const DetailsRoom = () => {
     bathroom,
     size,
     view,
-    available,
     occumpany,
     category
   } = room;
