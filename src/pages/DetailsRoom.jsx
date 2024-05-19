@@ -19,6 +19,7 @@ import {
   EffectCoverflow,
 } from "swiper/modules";
 import useAuth from "../hooks/useAuth";
+import SpecificReviews from "../components/SpecificReviews";
 
 const DetailsRoom = () => {
   const room = useLoaderData();
@@ -118,7 +119,7 @@ const DetailsRoom = () => {
         ))}
       </Swiper>
       <h3 className="text-3xl font-bold text-green-500">{title}</h3>
-      <p className="max-w-4xl mx-auto">{description}</p>
+      <p className="max-w-4xl">{description}</p>
       <h2 className="text-3xl font-bold text-center">Details</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div><hr className="pb-5" /><span className="text-lg font-semibold">CATEGORY</span>: {category}</div>
@@ -178,7 +179,6 @@ const DetailsRoom = () => {
                 Total Price
               </label>
               <input
-                
                 type="text"
                 name="price"
                 defaultValue={price - ((room?.offer / 100) * price) || price}
@@ -191,7 +191,6 @@ const DetailsRoom = () => {
             <button
               type="submit"
               className="btn btn-outline btn-warning px-10"
-              //disabled={availableRoom === 'Booked'} // Conditionally disable the button
             >
               BOOK Now
             </button>
@@ -216,6 +215,7 @@ const DetailsRoom = () => {
           </div>
         </dialog>
       )}
+      <SpecificReviews id={_id}/>
     </div>
   );
 };

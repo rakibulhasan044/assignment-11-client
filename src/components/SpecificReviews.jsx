@@ -8,16 +8,19 @@ import axios from "axios";
 import moment from 'moment';
 import { FaStar } from "react-icons/fa";
 
-const Reviews = () => {
+const SpecificReviews = ({id}) => {
+    console.log(id);
+    
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios(`${import.meta.env.VITE_API_URL}/reviews`);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/${id}`);
       setReviews(data);
     };
     getData();
-  }, []);
+  }, [id]);
+  console.log(reviews);
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => (
@@ -30,13 +33,13 @@ const Reviews = () => {
 
   return (
     <div className="max-w-6xl px-6 py-10 mx-auto">
-      <p className="text-xl font-medium text-blue-500">Testimonials</p>
-
       <h1 className="mt-2 text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
-        What clients are saying
+        Reviews
       </h1>
 
-      <Swiper
+      {
+        reviews.length === 0 ? <p className="text-2xl font-bold py-4">No review yet</p> : (
+            <Swiper
         spaceBetween={30}
         freeMode={true}
         pagination={{
@@ -80,8 +83,10 @@ const Reviews = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+        )
+      }
     </div>
   );
 };
 
-export default Reviews;
+export default SpecificReviews;

@@ -10,10 +10,12 @@ const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [star, setStar] = useState(0);
   const [hoverStar, setHoverStar] = useState(0);
-  const [reviewRoom, setReviewRoom] = useState(null)
+  const [reviewRoom, setReviewRoom] = useState(null);
 
   useEffect(() => {
-    getData();
+    if (user) {
+      getData();
+    }
   }, [user]);
 
   const getData = async () => {
@@ -30,22 +32,24 @@ const MyBookings = () => {
     const form = e.target;
     const text = form.text.value;
     const date = moment();
+    const roomId = reviewRoom;
+
     const reviewData = {
-      name, photo, text, date, roomId : reviewRoom, star
-    }
-    // console.log(roomId);
+      name, photo, text, date, roomId, star
+    };
+
     if (star > 1 && text.length > 1) {
-      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData)
-      console.log(data);
+      await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData);
       setStar(0);
       Swal.fire({
         title: "Review Submitted",
         text: "Thank you",
         icon: "success"
       });
-      getData()
+      getData();
       form.reset();
     } else {
+      console.log(roomId);
       Swal.fire({
         title: "Please fill in the star rating & write a comment",
         text: "Thank you",
@@ -72,13 +76,10 @@ const MyBookings = () => {
     }
 
     try {
-      const { data } = await axios.delete(`${import.meta.env.VITE_API_URL}/booking/${id}`);
-      console.log('Booking deleted:', data);
-      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
-      console.log('Room status updated:', response.data);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/booking/${id}`);
+      await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
       getData();
     } catch (error) {
-      console.log('Error deleting booking:', error);
       Swal.fire({
         title: "Error",
         text: "There was an error canceling your booking. Please try again.",
@@ -90,7 +91,6 @@ const MyBookings = () => {
   return (
     <div className="overflow-x-auto">
       <table className="table">
-        {/* head */}
         <thead>
           <tr>
             <th>Delete</th>
@@ -105,7 +105,7 @@ const MyBookings = () => {
           {bookings.map((booking, index) => (
             <tr key={index}>
               <th>
-                <MdDeleteForever
+                <MdDeleteForever className="text-red-700"
                   size={30}
                   onClick={() => handleDelete(booking._id, booking.roomId, booking.date)}
                 />
@@ -126,17 +126,17 @@ const MyBookings = () => {
               <th>
                 <button
                   className="btn"
-                  onClick={() =>
-                    document.getElementById("my_modal_1").showModal()
-                  }
+                  onClick={() => {
+                    setReviewRoom(booking.roomId);
+                    document.getElementById("my_modal_1").showModal();
+                  }}
                 >
                   Review
                 </button>
                 <dialog id="my_modal_1" className="modal">
                   <div className="modal-box">
                     <div>
-                      <form method="dialog" onSubmit={handleReview}
-                      onChange={() => setReviewRoom(booking.roomId)}>
+                      <form method="dialog" onSubmit={handleReview}>
                         <div className="text-center space-y-2">
                           <h3 className="font-bold text-lg">Rate us</h3>
                           <div className="cursor-pointer">
