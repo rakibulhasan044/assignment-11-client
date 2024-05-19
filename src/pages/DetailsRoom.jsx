@@ -58,7 +58,8 @@ const DetailsRoom = () => {
         date: startDate,
         totalPrice: price - ((room?.offer / 100) * price) || price,
         category: category,
-        roomName: title
+        roomName: title,
+        roomId: _id,
       }
 
       try {
