@@ -22,20 +22,26 @@ const MyBookings = () => {
     setBookings(data);
   };
 
-  const handleReview = e => {
+  const handleReview = async e => {
     //e.preventDefault();
     const name = user?.displayName;
     const photo = user?.photoURL;
     const form = e.target;
     const text = form.text.value;
+    const date = moment();
+    const reviewData = {
+      name, photo, text, date
+    }
     if (star > 1 && text.length > 1) {
-      console.log('Review submitted:', text, star, name, photo);
+      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData)
+      console.log(data);
       setStar(0);
       Swal.fire({
         title: "Review Submitted",
         text: "Thank you",
         icon: "success"
       });
+      getData()
       form.reset();
     } else {
       Swal.fire({
