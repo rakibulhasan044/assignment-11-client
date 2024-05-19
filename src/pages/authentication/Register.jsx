@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa";
-import register from '../../assets/animation/register.json'
+import register from "../../assets/animation/register.json";
 import Lottie from "lottie-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Register = () => {
   const [show, setShow] = useState(false);
-  const { user, createUser, profileUpdate, setUser } = useAuth()
+  const { user, createUser, updateUserProfile, setUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -20,27 +23,26 @@ const Register = () => {
     console.log(name, email, photourl, password);
 
     createUser(email, password)
-    .then(res => {
+      .then((res) => {
         console.log(res.user);
-        profileUpdate(name, photourl)
-      .then(() => {
-        setUser({...user, displplayName: name, photoURL: photourl})
-      })
-      Swal.fire({
-        title: "Successfully Register!",
-        text: "Welcome!",
-        icon: "success"
-      });
-    })
-    .catch(error => {
+        updateUserProfile(name, photourl);
+        setUser({ ...user, displayName: name, photoURL: photourl });
+        navigate(location?.state ? location.state : '/', {replace: true})
         Swal.fire({
-            title: "Please Try Again!",
-            text: `${error.message}`,
-            icon: "error"
-          });
-    })
-
+          title: "Successfully Register!",
+          text: "Welcome!",
+          icon: "success",
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Please Try Again!",
+          text: `${error.message}`,
+          icon: "error",
+        });
+      });
   };
+
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">

@@ -6,6 +6,7 @@ import Login from "../pages/authentication/Login";
 import Register from "../pages/authentication/Register";
 import Room from "../pages/Room";
 import DetailsRoom from "../pages/DetailsRoom";
+import PrivateRoute from "./PrivateRoute";
 
 
 
@@ -25,7 +26,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '/my-bookings',
-                element: <MyBookings/>
+                element: <PrivateRoute>
+                    <MyBookings/>
+                </PrivateRoute>
             },
             {
                 path: '/login',
@@ -39,7 +42,9 @@ const router = createBrowserRouter([
             //     fetch(`https://10-assignment-server-five.vercel.app/crafts/${params.id}`),
             {
                 path: '/room-details/:id',
-                element: <DetailsRoom/>,
+                element: <PrivateRoute>
+                    <DetailsRoom/>
+                </PrivateRoute>,
                 loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/rooms/${params.id}`)
 
             }

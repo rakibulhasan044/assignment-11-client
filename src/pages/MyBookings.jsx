@@ -38,7 +38,7 @@ const MyBookings = () => {
       name, photo, text, date, roomId, star
     };
 
-    if (star > 1 && text.length > 1) {
+    if (star > 0 && text.length > 0) {
       await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData);
       setStar(0);
       Swal.fire({

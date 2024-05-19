@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa6";
@@ -10,7 +10,9 @@ import Swal from "sweetalert2";
 
 const Login = () => {
   const [show, setShow] = useState(false);
-  const { googleLogin, signIn } = useAuth()
+  const { googleLogin, signIn } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -19,32 +21,33 @@ const Login = () => {
     const password = form.password.value;
     console.log(email, password);
     signIn(email, password)
-    .then(res => {
+      .then((res) => {
         console.log(res.user);
-    })
+        navigate(location?.state ? location.state : "/");
+      })
 
-    .catch(error =>{
+      .catch((error) => {
         Swal.fire({
-            title: "Something wrong!",
-            text: `${error.message}`,
-            icon: "error"
-          });
-    })
+          title: "Something wrong!",
+          text: `${error.message}`,
+          icon: "error",
+        });
+      });
   };
 
   const handleGoogleLogin = async () => {
-    console.log('ttt');
+    console.log("ttt");
     try {
-        const result = await googleLogin()
-        console.log(result.user);
-        Swal.fire({
-            title: "Successfully Login!",
-            text: "Welcome!",
-            icon: "success"
-          });
-    }
-    catch(err) {
-        console.log(err.message);
+      const result = await googleLogin();
+      console.log(result.user);
+      navigate(location?.state ? location.state : "/");
+      Swal.fire({
+        title: "Successfully Login!",
+        text: "Welcome!",
+        icon: "success",
+      });
+    } catch (err) {
+      console.log(err.message);
     }
   };
   return (
@@ -110,7 +113,7 @@ const Login = () => {
               role="button"
               aria-label="Login with Google"
             >
-                <FaGoogle size={30} />
+              <FaGoogle size={30} />
             </li>
           </ul>
           <p>

@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
@@ -26,7 +26,8 @@ const DetailsRoom = () => {
   const [startDate, setStartDate] = useState(new Date());
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
-  const [availableRoom, setRoomAvailable] = useState(room.available); // Track the availability status
+  const [availableRoom, setRoomAvailable] = useState(room.available);
+  const navigate = useNavigate()
 
   const {
     _id,
@@ -66,6 +67,7 @@ const DetailsRoom = () => {
       try {
         const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/booking`, bookingData);
         console.log(data);
+        navigate('/my-bookings')
         Swal.fire({
           position: "center",
           icon: "success",
