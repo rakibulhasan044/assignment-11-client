@@ -47,6 +47,22 @@ const MyBookings = () => {
    }
    
   }
+
+  const handleDelete = async (id, roomId, newStatus) => {
+    console.log(id, roomId);
+
+    try{
+      const {data} = await axios.delete(`${import.meta.env.VITE_API_URL}/booking/${id}`)
+    console.log(data);
+    const response = await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`,{available: newStatus})
+    console.log(response.data);
+
+    getData();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
   console.log(bookings);
   return (
     <div className="overflow-x-auto">
@@ -66,7 +82,7 @@ const MyBookings = () => {
           {bookings.map((booking, index) => (
             <tr key={index}>
               <th>
-                <MdDeleteForever size={30} />
+                <MdDeleteForever size={30} onClick={() => handleDelete(booking._id, booking.roomId, "Available")} />
               </th>
               <td>
                 <div className="flex items-center gap-3">
