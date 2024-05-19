@@ -31,7 +31,7 @@ const MyBookings = () => {
     const text = form.text.value;
     const date = moment();
     const reviewData = {
-      name, photo, text, date, roomId : reviewRoom
+      name, photo, text, date, roomId : reviewRoom, star
     }
     // console.log(roomId);
     if (star > 1 && text.length > 1) {
