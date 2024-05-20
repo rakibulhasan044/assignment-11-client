@@ -1,7 +1,10 @@
 import { useLoaderData } from "react-router-dom";
 import RoomCard from "../components/RoomCard";
 import { useEffect, useState } from "react";
-import axios from 'axios'
+import axios from 'axios';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 
 const Room = () => {
   const allCount = useLoaderData();
@@ -55,10 +58,11 @@ const Room = () => {
     .then(response => {
       setCount(response.data.count)
     })
+    AOS.init();
   }, [currentPage, itemsPerPage, filter, priceRange]);
 
   return (
-    <div>
+    <div data-aos='fade-down'>
       <div className="flex gap-5 md:gap-14">
       <div className="my-5">
         <select onChange={e => setFilter(e.target.value)} value={filter} name="category" className="p-2">

@@ -7,6 +7,8 @@ import Lottie from "lottie-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import axios from "axios";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Register = () => {
 
@@ -19,7 +21,9 @@ const Register = () => {
     if(user) {
       navigate('/')
     }
+    AOS.init();
   },[navigate, user])
+
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -56,7 +60,7 @@ const Register = () => {
   if(user || loading) return;
 
   return (
-    <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">
+    <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full"  data-aos="fade-down-left">
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
         <Lottie
           animationData={register}
@@ -125,7 +129,7 @@ const Register = () => {
             </span>
           </div>
           <div className="form-control mt-6">
-            <button className="btn btn-primary">Login</button>
+            <button className="btn btn-primary">Register</button>
           </div>
           <hr className="mt-5" />
         </form>

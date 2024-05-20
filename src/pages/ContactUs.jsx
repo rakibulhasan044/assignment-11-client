@@ -1,12 +1,19 @@
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
 
 const ContactUs = () => {
 
+    useEffect(() => {
+        AOS.init();
+    },[])
+
     return (
-        <section className="bg-white ">
+        <section className="bg-white min-h-[calc(100vh-481px)]" data-aos='fade-down'>
             <div className="container px-6 py-12 mx-auto">
                 <div>
                     <p className="font-medium text-blue-500 dark:text-blue-400">Contact us</p>
-                    <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl dark:text-white">
+                    <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl">
                         We’d love to hear from you
                     </h1>
                     <p className="mt-3 text-gray-500 dark:text-gray-400">

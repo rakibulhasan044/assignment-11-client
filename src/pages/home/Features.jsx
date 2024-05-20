@@ -1,9 +1,17 @@
+import { useEffect } from "react";
 import f1 from "../../assets/feautures1.jpg";
 import f2 from "../../assets/feautures2.jpg";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Feutures = () => {
+
+  useEffect(()=>{
+    AOS.init();
+  },[]);
+  
   return (
-    <div className="px-2 md:px-5">
+    <div className="px-2 md:px-5" data-aos="zoom-out-up" data-aos-duration="1000">
       <h3 className="text-2xl md:text-4xl font-bold text-center py-2 md:py-5 mt-5 md:mt-10">Features</h3>
       <div className="flex flex-col md:flex-row w-full gap-3 md:gap-10">
         <div className="md:w-3/5">

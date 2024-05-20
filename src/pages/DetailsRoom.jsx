@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 
@@ -8,6 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import {
   Pagination,
@@ -95,8 +97,12 @@ const DetailsRoom = () => {
     setModalOpen(false);
   }
 
+  useEffect(() => {
+    AOS.init();
+  },[])
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-aos="fade-down">
       <Swiper
         modules={[
           Navigation,

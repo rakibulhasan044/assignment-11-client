@@ -6,6 +6,8 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import { EffectCoverflow, FreeMode, Autoplay, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const FeaturedRooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -19,11 +21,12 @@ const FeaturedRooms = () => {
         console.log(error);
       }
     };
+    AOS.init();
     getData();
   }, []);
 
   return (
-    <div className="mt-10 md:mt-16">
+    <div className="mt-10 md:mt-16" data-aos="zoom-out-up" data-aos-duration="1000">
       <p className="text-2xl md:text-4xl font-bold text-center pb-4">Accomodation</p>
       <Swiper
         effect={"coverflow"}

@@ -1,11 +1,17 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 const RoomCard = ({room}) => {
+    useEffect(() => {
+        AOS.init()
+    },[])
     const {_id, title, price, size, images, occupancy} = room;
     
     return (
-        <div>
+        <div data-aos="zoom-out-down" data-aos-duration="1000">
             <Link to={`/room-details/${_id}`}>
                 <img src={images[0]} alt="" />
             </Link>

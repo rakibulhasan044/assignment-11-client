@@ -8,6 +8,8 @@ import login from "../../assets/animation/login.json";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import axios from "axios";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -20,6 +22,10 @@ const Login = () => {
       navigate('/')
     }
   },[navigate, user])
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -62,8 +68,10 @@ const Login = () => {
       console.log(err.message);
     }
   };
+
+  
   return (
-    <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">
+    <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full" data-aos="fade-down">
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
         <Lottie
           animationData={login}

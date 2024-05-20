@@ -3,8 +3,10 @@ import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
-import moment from 'moment';
+import moment from "moment";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -18,6 +20,7 @@ const MyBookings = () => {
     if (user) {
       getData();
     }
+    AOS.init();
   }, [user]);
 
   const getData = async () => {
@@ -35,7 +38,12 @@ const MyBookings = () => {
     const roomId = reviewRoom;
 
     const reviewData = {
-      name, photo, text, date, roomId, star
+      name,
+      photo,
+      text,
+      date,
+      roomId,
+      star,
     };
 
     if (star > 0 && text.length > 0) {
@@ -44,7 +52,7 @@ const MyBookings = () => {
       Swal.fire({
         title: "Review Submitted",
         text: "Thank you",
-        icon: "success"
+        icon: "success",
       });
       getData();
       form.reset();
@@ -53,7 +61,7 @@ const MyBookings = () => {
       Swal.fire({
         title: "Please fill in the star rating & write a comment",
         text: "Thank you",
-        icon: "error"
+        icon: "error",
       });
     }
   };
@@ -61,7 +69,7 @@ const MyBookings = () => {
   const canCancelBooking = (bookingDate) => {
     const today = moment();
     const bookingDateMoment = moment(bookingDate);
-    const cancellationDeadline = bookingDateMoment.subtract(1, 'days');
+    const cancellationDeadline = bookingDateMoment.subtract(1, "days");
     return today.isBefore(cancellationDeadline);
   };
 
@@ -70,26 +78,59 @@ const MyBookings = () => {
       Swal.fire({
         title: "Cancellation Not Allowed",
         text: "You can only cancel the booking at least one day before the booked date.",
-        icon: "error"
+        icon: "error",
       });
       return;
     }
 
+    // try {
+    //   await axiosSecure.delete(`/booking/${id}`);
+    //   await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
+    //   getData();
+    // } catch (error) {
+    //   Swal.fire({
+    //     title: "Error",
+    //     text: "There was an error canceling your booking. Please try again.",
+    //     icon: "error"
+    //   });
+    // }
     try {
-      await axiosSecure.delete(`/booking/${id}`);
-      await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
-      getData();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await axiosSecure.delete(`/booking/${id}`);
+          await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, {
+            available: "Available",
+          });
+          getData();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        }
+      });
     } catch (error) {
       Swal.fire({
         title: "Error",
         text: "There was an error canceling your booking. Please try again.",
-        icon: "error"
+        icon: "error",
       });
     }
   };
 
   return (
-    <div className="overflow-x-auto min-h-[calc(100vh-481px)]">
+    <div
+      className="overflow-x-auto min-h-[calc(100vh-481px)]"
+      data-aos="fade-down"
+    >
       <table className="table">
         <thead>
           <tr>
@@ -103,11 +144,18 @@ const MyBookings = () => {
         </thead>
         <tbody>
           {bookings.map((booking, index) => (
-            <tr key={index}>
+            <tr
+              key={index}
+              data-aos={index % 2 === 0 ? "fade-left" : "fade-right"}
+              data-aos-duration="1000"
+            >
               <th>
-                <MdDeleteForever className="text-red-600"
+                <MdDeleteForever
+                  className="text-red-600 cursor-pointer"
                   size={35}
-                  onClick={() => handleDelete(booking._id, booking.roomId, booking.date)}
+                  onClick={() =>
+                    handleDelete(booking._id, booking.roomId, booking.date)
+                  }
                 />
               </th>
               <td>
@@ -121,7 +169,7 @@ const MyBookings = () => {
               <td>
                 {booking.category}, {booking.roomName}
               </td>
-              <td>{moment(booking.date).format('MM/DD/YYYY')}</td>
+              <td>{moment(booking.date).format("MM/DD/YYYY")}</td>
               <td>${booking.totalPrice}</td>
               <th>
                 <button
@@ -143,7 +191,13 @@ const MyBookings = () => {
                             {[...Array(5)].map((_, index) => (
                               <span
                                 key={index}
-                                className={`${index + 1 <= star ? "text-yellow-500" : ''} ${index + 1 <= hoverStar ? "text-yellow-500" : ''} px-2 text-2xl`}
+                                className={`${
+                                  index + 1 <= star ? "text-yellow-500" : ""
+                                } ${
+                                  index + 1 <= hoverStar
+                                    ? "text-yellow-500"
+                                    : ""
+                                } px-2 text-2xl`}
                                 onMouseOver={() => setHoverStar(index + 1)}
                                 onMouseOut={() => setHoverStar(0)}
                                 onClick={() => setStar(index + 1)}
@@ -159,7 +213,9 @@ const MyBookings = () => {
                           placeholder="Please give your opinion"
                           name="text"
                         ></textarea>
-                        <button className="btn btn-outline btn-success mt-5">Submit</button>
+                        <button className="btn btn-outline btn-success mt-5">
+                          Submit
+                        </button>
                       </form>
                     </div>
                   </div>
