@@ -12,7 +12,7 @@ const Home = () => {
         AOS.init()
     },[])
     return (
-        <div className="px-4" data-aos="fade-up">
+        <div className="px-4" data-aos="fade-down">
             <Banner/>
             <Map/>
             <FeaturedRooms/>

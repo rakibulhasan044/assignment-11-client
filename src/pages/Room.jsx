@@ -63,7 +63,7 @@ const Room = () => {
   }, [currentPage, itemsPerPage, filter, priceRange]);
 
   return (
-    <div data-aos='fade-down'>
+    <div data-aos='fade-down' className="min-h-[calc(100vh-481px)]">
       <PageTitle title={"All rooms"}/>
       <div className="flex gap-5 md:gap-14">
       <div className="my-5">

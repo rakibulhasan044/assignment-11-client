@@ -2,6 +2,9 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from 'react';
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -14,6 +17,10 @@ const Navbar = () => {
     });
   };
 
+  useEffect(() => {
+    AOS.init();
+  },[])
+
   const listItems = (
     <>
       <li>
@@ -22,7 +29,6 @@ const Navbar = () => {
       <li>
         <NavLink to="/rooms">Rooms</NavLink>
       </li>
-      
       {user ? (
         <>
         <li>
@@ -42,7 +48,7 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100" data-aos='fade-left' data-aos-duration='500'>
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
