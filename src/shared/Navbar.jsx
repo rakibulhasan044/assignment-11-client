@@ -1,12 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
 
   const handleLogOut = () => {
     logOut();
+    Swal.fire({
+      title: "Successfully Logout!",
+      icon: "success",
+    });
   };
 
   const listItems = (
@@ -17,11 +22,13 @@ const Navbar = () => {
       <li>
         <NavLink to="/rooms">Rooms</NavLink>
       </li>
-      <li>
+      
+      {user ? (
+        <>
+        <li>
         <NavLink to="my-bookings">My Booking</NavLink>
       </li>
-      {user ? (
-        <></>
+        </>
       ) : (
         <>
           <li>
@@ -29,6 +36,9 @@ const Navbar = () => {
           </li>
         </>
       )}
+      <li>
+        <NavLink to="/contact">Contact Us</NavLink>
+      </li>
     </>
   );
   return (
@@ -53,12 +63,12 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 gap-1"
+            className="menu menu-sm dropdown-content mt-3  z-10 p-2 shadow bg-base-100 rounded-box w-52 gap-1"
           >
             {listItems}
           </ul>
         </div>
-        <img className="size-16 md:size-20" src={logo} alt="" />
+        <Link to='/'><img className="size-16 md:size-20" src={logo} alt="" /></Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-3">{listItems}</ul>

@@ -7,6 +7,8 @@ import Register from "../pages/authentication/Register";
 import Room from "../pages/Room";
 import DetailsRoom from "../pages/DetailsRoom";
 import PrivateRoute from "./PrivateRoute";
+import ErrorPage from "../pages/ErrorPage";
+import ContactUs from "../pages/ContactUs";
 
 
 
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Main/>,
+        errorElement: <ErrorPage/>,
         children: [
             {
                 path: '/',
@@ -47,6 +50,10 @@ const router = createBrowserRouter([
                 </PrivateRoute>,
                 loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/rooms/${params.id}`)
 
+            },
+            {
+                path: '/contact',
+                element: <ContactUs/>
             }
         ]
     }

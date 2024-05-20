@@ -24,6 +24,7 @@ const FeaturedRooms = () => {
 
   return (
     <div className="mt-10 md:mt-16">
+      <p className="text-2xl md:text-4xl font-bold text-center pb-4">Accomodation</p>
       <Swiper
         effect={"coverflow"}
         //slidesPerView={3}

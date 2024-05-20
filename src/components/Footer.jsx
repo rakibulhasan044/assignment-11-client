@@ -1,4 +1,4 @@
-
+import logo from '../assets/logo.png'
 
 const Footer = () => {
     return (
@@ -43,9 +43,10 @@ const Footer = () => {
                 <hr className="my-6 border-gray-200 md:my-8 dark:border-gray-700" />
 
                 <div className="flex items-center justify-between">
-                    <a href="#">
-                        <img className="w-auto h-7" src="https://merakiui.com/images/full-logo.svg" alt="Company Logo" />
-                    </a>
+                    <div className='flex flex-col items-center'>
+                        <img className="w-auto size-16" src={logo} alt="Company Logo" />
+                        <p className='text-xl font-bold text-violet-500'>Splendico</p>
+                    </div>
 
                     <div className="flex -mx-2">
                         <a href="#" className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400" aria-label="Reddit">

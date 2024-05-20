@@ -89,7 +89,7 @@ const MyBookings = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto min-h-[calc(100vh-481px)]">
       <table className="table">
         <thead>
           <tr>
@@ -105,8 +105,8 @@ const MyBookings = () => {
           {bookings.map((booking, index) => (
             <tr key={index}>
               <th>
-                <MdDeleteForever className="text-red-700"
-                  size={30}
+                <MdDeleteForever className="text-red-600"
+                  size={35}
                   onClick={() => handleDelete(booking._id, booking.roomId, booking.date)}
                 />
               </th>
@@ -125,7 +125,7 @@ const MyBookings = () => {
               <td>${booking.totalPrice}</td>
               <th>
                 <button
-                  className="btn"
+                  className="btn bg-violet-700 text-white"
                   onClick={() => {
                     setReviewRoom(booking.roomId);
                     document.getElementById("my_modal_1").showModal();

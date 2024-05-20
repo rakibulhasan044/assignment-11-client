@@ -6,7 +6,9 @@ const PrivateRoute = ({children}) => {
     const { user, loading } = useAuth();
     const location = useLocation();
     if(loading) return (
-        <span className="loading loading-spinner text-error"></span>
+         <div className='flex justify-center items-center min-h-[calc(100vh-481px)]'>
+            <div className="loading loading-spinner text-error w-[80px]"></div>
+        </div>
     )
 
     if(user) return children
