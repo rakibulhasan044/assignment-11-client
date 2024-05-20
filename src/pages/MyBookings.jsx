@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import Swal from "sweetalert2";
 import moment from 'moment';
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -11,6 +12,7 @@ const MyBookings = () => {
   const [star, setStar] = useState(0);
   const [hoverStar, setHoverStar] = useState(0);
   const [reviewRoom, setReviewRoom] = useState(null);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     if (user) {
@@ -19,9 +21,7 @@ const MyBookings = () => {
   }, [user]);
 
   const getData = async () => {
-    const { data } = await axios(
-      `${import.meta.env.VITE_API_URL}/bookings/${user?.email}`
-    );
+    const { data } = await axiosSecure(`/bookings/${user?.email}`);
     setBookings(data);
   };
 
@@ -39,7 +39,7 @@ const MyBookings = () => {
     };
 
     if (star > 0 && text.length > 0) {
-      await axios.post(`${import.meta.env.VITE_API_URL}/review`, reviewData);
+      await axiosSecure.post(`/review`, reviewData);
       setStar(0);
       Swal.fire({
         title: "Review Submitted",
@@ -76,7 +76,7 @@ const MyBookings = () => {
     }
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/booking/${id}`);
+      await axiosSecure.delete(`/booking/${id}`);
       await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
       getData();
     } catch (error) {

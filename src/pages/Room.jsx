@@ -83,7 +83,7 @@ const Room = () => {
           <RoomCard key={room._id} room={room}></RoomCard>
         ))}
       </div>
-      <div className="flex gap-5 justify-center mb-5">
+      <div className="flex gap-5 justify-center my-10">
         <button onClick={handlePrevPage} className="btn btn-sm">Prev</button>
         {pages.map((page) => (
           <button

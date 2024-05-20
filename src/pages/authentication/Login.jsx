@@ -2,27 +2,35 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import login from "../../assets/animation/login.json";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Login = () => {
   const [show, setShow] = useState(false);
-  const { googleLogin, signIn } = useAuth();
+  const { googleLogin, signIn, user, loading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  useEffect(() => {
+    if(user) {
+      navigate('/')
+    }
+  },[navigate, user])
+
+  const handleLogin = async(e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
     signIn(email, password)
       .then((res) => {
-        console.log(res.user);
+        const { data } =  axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+          email: res?.user?.email
+        }, { withCredentials: true })
         navigate(location?.state ? location.state : "/");
       })
 
@@ -35,11 +43,15 @@ const Login = () => {
       });
   };
 
+  if(user || loading) return;
+
   const handleGoogleLogin = async () => {
-    console.log("ttt");
     try {
       const result = await googleLogin();
-      console.log(result.user);
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+        email: result?.user?.email
+      }, { withCredentials: true })
+      console.log(data);
       navigate(location?.state ? location.state : "/");
       Swal.fire({
         title: "Successfully Login!",

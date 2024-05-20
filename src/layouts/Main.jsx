@@ -1,13 +1,17 @@
-import { Outlet } from 'react-router';
-import Navbar from '../shared/Navbar';
+import { Outlet } from "react-router";
+import Navbar from "../shared/Navbar";
+import Footer from "../components/Footer";
 
 const Main = () => {
-    return (
-        <div className='container mx-auto'>
-            <Navbar/>
-            <Outlet/>
-        </div>
-    );
+  return (
+    <div>
+      <div className="container mx-auto">
+        <Navbar />
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default Main;

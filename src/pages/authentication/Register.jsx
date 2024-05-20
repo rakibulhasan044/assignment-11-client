@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa";
@@ -6,12 +6,20 @@ import register from "../../assets/animation/register.json";
 import Lottie from "lottie-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Register = () => {
+
   const [show, setShow] = useState(false);
-  const { user, createUser, updateUserProfile, setUser } = useAuth();
+  const { user, createUser, updateUserProfile, setUser, loading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user) {
+      navigate('/')
+    }
+  },[navigate, user])
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -20,13 +28,15 @@ const Register = () => {
     const email = form.email.value;
     const photourl = form.photourl.value;
     const password = form.password.value;
-    console.log(name, email, photourl, password);
 
     createUser(email, password)
       .then((res) => {
-        console.log(res.user);
+        
+        const { data } = axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+          email: res?.user?.email
+        }, { withCredentials: true })
         updateUserProfile(name, photourl);
-        setUser({ ...user, displayName: name, photoURL: photourl });
+        setUser({ ...res?.user, displayName: name, photoURL: photourl });
         navigate(location?.state ? location.state : '/', {replace: true})
         Swal.fire({
           title: "Successfully Register!",
@@ -42,6 +52,8 @@ const Register = () => {
         });
       });
   };
+
+  if(user || loading) return;
 
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full">

@@ -21,13 +21,12 @@ const FeaturedRooms = () => {
     };
     getData();
   }, []);
-  console.log(rooms);
 
   return (
     <div className="mt-10 md:mt-16">
       <Swiper
         effect={"coverflow"}
-        slidesPerView={3}
+        //slidesPerView={3}
         spaceBetween={20}
         grabCursor={true}
         freeMode={true}
@@ -45,6 +44,17 @@ const FeaturedRooms = () => {
           slideShadows: true,
         }}
         modules={[EffectCoverflow, FreeMode, Autoplay, Navigation]}
+        breakpoints={{
+          400: {
+            slidesPerView: 1,
+          },
+          600: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
         className="mySwiper"
       >
         {rooms.map((room) => (

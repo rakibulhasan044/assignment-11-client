@@ -9,10 +9,9 @@ import moment from 'moment';
 import { FaStar } from "react-icons/fa";
 
 const SpecificReviews = ({id}) => {
-    console.log(id);
     
   const [reviews, setReviews] = useState([]);
-
+  
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/reviews/${id}`);
@@ -20,7 +19,6 @@ const SpecificReviews = ({id}) => {
     };
     getData();
   }, [id]);
-  console.log(reviews);
 
   const renderStars = (rating) => {
     return [...Array(5)].map((_, index) => (

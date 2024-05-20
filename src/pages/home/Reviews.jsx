@@ -32,7 +32,7 @@ const Reviews = () => {
     <div className="max-w-6xl px-6 py-10 mx-auto">
       <p className="text-xl font-medium text-blue-500">Testimonials</p>
 
-      <h1 className="mt-2 text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
+      <h1 className="mt-2 text-2xl font-semibold text-gray-800 capitalize lg:text-3xl">
         What clients are saying
       </h1>
 
@@ -58,7 +58,7 @@ const Reviews = () => {
       >
         {reviews.map((r) => (
           <SwiperSlide key={r._id}>
-            <div className="p-4 border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-4 border rounded-lg shadow-md bg-gray-800 dark:border-gray-700">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden">
                   <img className="w-full h-full object-cover" src={r.photo} alt={r.name} />

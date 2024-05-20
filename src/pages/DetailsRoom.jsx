@@ -2,7 +2,6 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
-import axios from 'axios';
 import Swal from "sweetalert2";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,6 +19,7 @@ import {
 } from "swiper/modules";
 import useAuth from "../hooks/useAuth";
 import SpecificReviews from "../components/SpecificReviews";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const DetailsRoom = () => {
   const room = useLoaderData();
@@ -27,7 +27,8 @@ const DetailsRoom = () => {
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [availableRoom, setRoomAvailable] = useState(room.available);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const {
     _id,
@@ -65,7 +66,7 @@ const DetailsRoom = () => {
       }
 
       try {
-        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/booking`, bookingData);
+        const { data } = await axiosSecure.post(`/booking`, bookingData);
         console.log(data);
         navigate('/my-bookings')
         Swal.fire({
@@ -76,7 +77,7 @@ const DetailsRoom = () => {
           timer: 1500
         });
 
-        const state = await axios.patch(`${import.meta.env.VITE_API_URL}/room/${id}`, { available: newStatus });
+        const state = await axiosSecure.patch(`/room/${id}`, { available: newStatus });
         console.log(state.data);
         setRoomAvailable(state.data.available);
       } catch (error) {
@@ -171,7 +172,7 @@ const DetailsRoom = () => {
               </label>
               <DatePicker
                 id="date"
-                className="border p-2 rounded-lg w-full"
+                className="border p-2 rounded-lg w-full bg-gray-800 text-gray-200"
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
               />
