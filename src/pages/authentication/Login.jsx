@@ -7,7 +7,6 @@ import Lottie from "lottie-react";
 import login from "../../assets/animation/login.json";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-import axios from "axios";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import PageTitle from "../../components/PageTitle";
@@ -35,10 +34,7 @@ const Login = () => {
     const password = form.password.value;
     signIn(email, password)
       .then((res) => {
-        const { data } =  axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
-          email: res?.user?.email
-        }, { withCredentials: true })
-        console.log(data);
+        console.log(res.user);
         navigate(location?.state ? location.state : "/");
       })
 
@@ -56,10 +52,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await googleLogin();
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
-        email: result?.user?.email
-      }, { withCredentials: true })
-      console.log(data);
+      console.log(result.user);
       navigate(location?.state ? location.state : "/");
       Swal.fire({
         title: "Successfully Login!",

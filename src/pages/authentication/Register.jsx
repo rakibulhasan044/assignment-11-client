@@ -6,7 +6,6 @@ import register from "../../assets/animation/register.json";
 import Lottie from "lottie-react";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-import axios from "axios";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import PageTitle from "../../components/PageTitle";
@@ -62,14 +61,10 @@ const Register = () => {
       });
       return;
     }
-    
+
     createUser(email, password)
       .then((res) => {
-        
-        const { data } = axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
-          email: res?.user?.email
-        }, { withCredentials: true })
-        console.log(data);
+        console.log(res.user);
         updateUserProfile(name, photourl);
         setUser({ ...res?.user, displayName: name, photoURL: photourl });
         navigate(location?.state ? location.state : '/', {replace: true})

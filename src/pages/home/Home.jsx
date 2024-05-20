@@ -6,6 +6,7 @@ import Features from "./Features";
 import Reviews from "./Reviews";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import PageTitle from "../../components/PageTitle";
 
 const Home = () => {
     useEffect(() => {
@@ -13,6 +14,7 @@ const Home = () => {
     },[])
     return (
         <div className="px-4" data-aos="fade-down">
+            <PageTitle title={'home'}/>
             <Banner/>
             <Map/>
             <FeaturedRooms/>

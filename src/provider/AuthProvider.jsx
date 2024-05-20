@@ -30,10 +30,10 @@ const AuthProvider = ({children}) => {
 
     const logOut = async () => {
         setLoading(true);
-        const { data } = await axios(`${import.meta.env.VITE_API_URL}/logout`, {
-            withCredentials: true
-        })
-        console.log(data);
+        // const { data } = await axios(`${import.meta.env.VITE_API_URL}/logout`, {
+        //     withCredentials: true
+        // })
+        // console.log(data);
         return signOut(auth)
     }
 
@@ -44,16 +44,52 @@ const AuthProvider = ({children}) => {
         })
       }
 
-   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (createUser) => {
-        setUser(createUser)
-        console.log('current user',createUser);
-        setLoading(false)
-    })
+//    useEffect(() => {
+//     const unSubscribe = onAuthStateChanged(auth, (createUser) => {
+//         setUser(createUser)
+//         console.log('current user',createUser);
+//         setLoading(false)
+//     })
+//     return () => {
+//         unSubscribe()
+//     }
+//    },[])
+
+useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const userEmail = currentUser?.email || user?.email;
+      const loggedUser = { email: userEmail };
+      setUser(currentUser);
+      console.log("current user", currentUser);
+      setLoading(false);
+      if (currentUser) {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            loggedUser,
+            { withCredentials: true }
+          )
+          .then((res) => {
+            console.log("with token respo", res.data);
+          });
+      } else {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/logout`,
+            loggedUser,
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
+      }
+    });
     return () => {
-        unSubscribe()
-    }
-   },[])
+      return unsubscribe();
+    };
+  }, [user?.email]);
   
 
     const authInfo = {

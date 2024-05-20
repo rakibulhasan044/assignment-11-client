@@ -48,10 +48,10 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="navbar bg-base-100" data-aos='fade-left' data-aos-duration='500'>
+    <div className="navbar bg-base-100" data-aos='fade-left' data-aos-duration='500' style={{ zIndex: 1000, position: 'relative' }}>
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -76,8 +76,8 @@ const Navbar = () => {
         </div>
         <Link to='/'><img className="size-16 md:size-20" src={logo} alt="" /></Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-3">{listItems}</ul>
+      <div className="navbar-center hidden md:flex">
+        <ul className="menu menu-horizontal px-1 gap-3 z-10">{listItems}</ul>
       </div>
       <div className="navbar-end">
         <div className="flex items-center justify-center gap-3 md:gap-5">
