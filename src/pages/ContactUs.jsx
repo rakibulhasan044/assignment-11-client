@@ -1,6 +1,7 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
+import PageTitle from '../components/PageTitle';
 
 const ContactUs = () => {
 
@@ -11,6 +12,7 @@ const ContactUs = () => {
     return (
         <section className="bg-white min-h-[calc(100vh-481px)]" data-aos='fade-down'>
             <div className="container px-6 py-12 mx-auto">
+                <PageTitle title={'contact Us'}/>
                 <div>
                     <p className="font-medium text-blue-500 dark:text-blue-400">Contact us</p>
                     <h1 className="mt-2 text-2xl font-semibold text-gray-800 md:text-3xl">

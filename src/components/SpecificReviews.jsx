@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from 'moment';
 import { FaStar } from "react-icons/fa";
+import PropTypes from 'prop-types';
 
 const SpecificReviews = ({id}) => {
     
@@ -86,5 +87,9 @@ const SpecificReviews = ({id}) => {
     </div>
   );
 };
+
+SpecificReviews.propTypes = {
+  id: PropTypes.string
+}
 
 export default SpecificReviews;

@@ -22,6 +22,7 @@ import {
 import useAuth from "../hooks/useAuth";
 import SpecificReviews from "../components/SpecificReviews";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import PageTitle from "../components/PageTitle";
 
 const DetailsRoom = () => {
   const room = useLoaderData();
@@ -103,6 +104,7 @@ const DetailsRoom = () => {
 
   return (
     <div className="space-y-4" data-aos="fade-down">
+      <PageTitle title={'Room details'}/>
       <Swiper
         modules={[
           Navigation,

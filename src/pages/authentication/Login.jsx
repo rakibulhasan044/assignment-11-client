@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import PageTitle from "../../components/PageTitle";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -37,6 +38,7 @@ const Login = () => {
         const { data } =  axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
           email: res?.user?.email
         }, { withCredentials: true })
+        console.log(data);
         navigate(location?.state ? location.state : "/");
       })
 
@@ -72,6 +74,7 @@ const Login = () => {
   
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full" data-aos="fade-down">
+      <PageTitle title={'Login page'}/>
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
         <Lottie
           animationData={login}

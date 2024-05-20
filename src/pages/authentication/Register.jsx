@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import PageTitle from "../../components/PageTitle";
 
 const Register = () => {
 
@@ -33,12 +34,42 @@ const Register = () => {
     const photourl = form.photourl.value;
     const password = form.password.value;
 
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+    const lengthRegex = /.{6,}/;
+
+    if (!lengthRegex.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Password must be longer than 6 character!`,
+      });
+      return;
+    } 
+    if (!uppercaseRegex.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Please include a uppercase character!`,
+      });
+      return;
+    }
+    if (!lowercaseRegex.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Please include a lowercase character!`,
+      });
+      return;
+    }
+    
     createUser(email, password)
       .then((res) => {
         
         const { data } = axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
           email: res?.user?.email
         }, { withCredentials: true })
+        console.log(data);
         updateUserProfile(name, photourl);
         setUser({ ...res?.user, displayName: name, photoURL: photourl });
         navigate(location?.state ? location.state : '/', {replace: true})
@@ -61,6 +92,7 @@ const Register = () => {
 
   return (
     <div className="relative flex flex-col md:flex-row items-center py-10 md:py-20 max-h-screen w-full"  data-aos="fade-down-left">
+      <PageTitle title={'register page'}/>
       <div className="w-full md:w-2/5 h-full md:h-auto absolute md:relative top-0 left-0 md:top-auto md:left-auto">
         <Lottie
           animationData={register}

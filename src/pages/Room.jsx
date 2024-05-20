@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import PageTitle from "../components/PageTitle";
 
 
 const Room = () => {
@@ -63,6 +64,7 @@ const Room = () => {
 
   return (
     <div data-aos='fade-down'>
+      <PageTitle title={"All rooms"}/>
       <div className="flex gap-5 md:gap-14">
       <div className="my-5">
         <select onChange={e => setFilter(e.target.value)} value={filter} name="category" className="p-2">

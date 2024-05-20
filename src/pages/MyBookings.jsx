@@ -7,6 +7,7 @@ import moment from "moment";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import PageTitle from "../components/PageTitle";
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -83,17 +84,6 @@ const MyBookings = () => {
       return;
     }
 
-    // try {
-    //   await axiosSecure.delete(`/booking/${id}`);
-    //   await axios.patch(`${import.meta.env.VITE_API_URL}/room/${roomId}`, { available: "Available" });
-    //   getData();
-    // } catch (error) {
-    //   Swal.fire({
-    //     title: "Error",
-    //     text: "There was an error canceling your booking. Please try again.",
-    //     icon: "error"
-    //   });
-    // }
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -131,6 +121,7 @@ const MyBookings = () => {
       className="overflow-x-auto min-h-[calc(100vh-481px)]"
       data-aos="fade-down"
     >
+      <PageTitle title={'my bookings'}/>
       <table className="table">
         <thead>
           <tr>

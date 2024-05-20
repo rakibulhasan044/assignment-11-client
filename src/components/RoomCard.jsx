@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import PropTypes from 'prop-types'
 
 
 const RoomCard = ({room}) => {
@@ -30,5 +31,9 @@ const RoomCard = ({room}) => {
         </div>
     );
 };
+
+RoomCard.propTypes = {
+    room: PropTypes.object
+}
 
 export default RoomCard;
